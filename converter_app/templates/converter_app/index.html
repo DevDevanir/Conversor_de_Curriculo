@@ -1,0 +1,135 @@
+"""
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de HTML</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            color: #0056b3; /* Azul escuro, remetendo ao Itaú */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input[type="file"],
+        input[type="text"],
+        select { /* Adicionado para o select, embora estejamos usando RadioSelect */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .radio-group label { /* Estilo para labels dos radio buttons */
+            font-weight: normal;
+            margin-right: 15px;
+        }
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+        button[type="submit"] {
+            background-color: #EC7000; /* Laranja Itaú */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button[type="submit"]:hover {
+            background-color: #cc5f00; /* Laranja mais escuro no hover */
+        }
+        .error-message {
+            color: red;
+            background-color: #ffe0e0;
+            border: 1px solid red;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group ul { /* Estilização para erros do formulário Django */
+            list-style-type: none;
+            padding: 0;
+            margin: 5px 0 0 0;
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Conversor de Currículo HTML</h1>
+        <p style="text-align: center; margin-bottom: 25px;">
+            Faça o upload do seu arquivo <code>index.html</code>, defina o nome e o formato de saída desejado.
+        </p>
+
+        {% if error_message %}
+            <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %} {# Tag de proteção CSRF do Django #}
+            
+            <div class="form-group">
+                {{ form.html_file.label_tag }}
+                {{ form.html_file }}
+                {{ form.html_file.errors }}
+            </div>
+
+            <div class="form-group">
+                {{ form.output_filename.label_tag }}
+                {{ form.output_filename }}
+                {{ form.output_filename.errors }}
+            </div>
+
+            <div class="form-group">
+                <label>{{ form.output_format.label }}</label>
+                <div class="radio-group">
+                    {% for radio in form.output_format %}
+                        <label for="{{ radio.id_for_label }}">
+                            {{ radio.tag }}
+                            {{ radio.choice_label }}
+                        </label>
+                    {% endfor %}
+                </div>
+                {{ form.output_format.errors }}
+            </div>
+            
+            <button type="submit">Converter e Baixar</button>
+        </form>
+    </div>
+</body>
+</html>
+"""
